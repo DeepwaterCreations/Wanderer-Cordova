@@ -1,6 +1,45 @@
 ﻿var DCKingdomCountdowns = {};
 
 DCKingdomCountdowns.component = function () {
+    /* MODULE FUNCTIONS AND VARIABLES */
+
+    NUM_PLAYERS = 5; //TODO: Make adjustable?
+
+    this.countdown_list = [];
+    that = this;
+    ["Crossroads", "Crisis", "Time Passes"].forEach(function (title) {
+        countdown = {
+            title: title,
+            boxlist: []
+        }; 
+        console.log(title);
+        console.log(countdown.title);
+        num_boxes = title === "Time Passes" ? NUM_PLAYERS : NUM_PLAYERS+1;
+        for (i = 0; i < num_boxes; i++){
+            countdown.boxlist.push(false);
+        }
+        that.countdown_list.push(countdown);
+    });
+
+    //Marks a box in the countdown if there are any to mark
+    this.markBox = function (countdown) {
+        i = countdown.boxlist.indexOf(false);  
+        if(i > -1) {
+            countdown.boxlist[i] = true;
+        }
+    };
+
+    //Unmarks a box in the countdown if there are any marked
+    this.unmarkBox = function (countdown) {
+        i = countdown.boxlist.indexOf(false);
+        if(i > 0) {
+            countdown.boxlist[i-1] = false;
+        } else if (i === -1) {
+            countdown.boxlist[countdown.boxlist.length - 1] = false;
+        }
+    };
+
+    ////////////////////////////////////
 
     // all component need a unique ID
     this.getId = function () {
@@ -17,25 +56,20 @@ DCKingdomCountdowns.component = function () {
         this.communicator = communicator;
         this.Dependencies = dependencies;
     };
-    // called when a new character is created
+
     this.OnNewCharacter = function () {
-        // something like:
-        //this.key = "value";
     };
-    // called when a character is saved
+
     this.OnSave = function () {
-        // something like:
-        //this.communicator.write("key",this.key);
+        this.communicator.write("countdown_list", this.countdown_list);
     };
-    // called when a characrer is loaded 
+
     this.OnLoad = function () {
-        // something like:
-        // if (this.communicator.canRead("key")){
-        //this.key = this.communicator.read("key");
-        //}else{
-        //this.key = "default value"
-        //}
+        if (this.communicator.canRead("countdown_list")) {
+            this.countdown_list = this.communicator.read("countdown_list");
+        }
     };
+
     this.OnUpdate = function () {
     };
 

@@ -1,1 +1,12 @@
-﻿<div class="pad-me"></div>
+﻿<link rel="stylesheet" type="text/css" href="modules/dc-kingdom-countdowns/stylesheet.css">
+<div class="pad-me">
+	<div data-ng-repeat="countdown in module.countdown_list"
+	     class="countdown_section">
+		<span>{{countdown.title}}</span>
+		<button data-ng-click="module.unmarkBox(countdown)">-</button>
+		<span class="box"
+		      data-ng-repeat="box in countdown.boxlist track by $index"
+		      data-ng-class="{'checked':countdown.boxlist[$index]}"></span>
+		<button data-ng-click="module.markBox(countdown)">+</button>
+	</div>
+</div>
